@@ -13,6 +13,6 @@ type CreatedFeedMessage struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
-func (m *CreatedFeedMessage) Type() string {
+func (m CreatedFeedMessage) Type() string {
 	return "created_feed"
 }

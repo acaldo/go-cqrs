@@ -52,7 +52,7 @@ func (n *NatsEventStore) PublishCreatedFeed(ctx context.Context, feed *models.Fe
 		Description: feed.Description,
 		CreatedAt:   feed.CreatedAt,
 	}
-	data, err := n.encodeMessage(&msg)
+	data, err := n.encodeMessage(msg)
 	if err != nil {
 		return err
 	}
