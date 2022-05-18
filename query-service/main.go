@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/acaldo/cqrs/database"
 	"github.com/acaldo/cqrs/events"
 	"github.com/acaldo/cqrs/repository"
 	"github.com/acaldo/cqrs/search"
+	"github.com/gorilla/mux"
 	"github.com/kelseyhightower/envconfig"
 )
 
@@ -17,6 +19,13 @@ type Config struct {
 	PostgresPassword     string `envconfig:"POSTGRES_PASSWORD"`
 	NatsAddress          string `envconfig:"NATS_ADDRESS"`
 	ElasticsearchAddress string `envconfig:"ELASTICSEARCH_ADDRESS"`
+}
+
+func newRouter() (router *mux.Router) {
+	router = mux.NewRouter()
+	router.HandleFunc("/feeds", listFeedsHandler).Methods("GET")
+	router.HandleFunc("/search", searchHandler).Methods("GET")
+	return
 }
 
 func main() {
@@ -55,5 +64,10 @@ func main() {
 	events.SetEventStore(n)
 
 	defer events.Close()
+
+	router := newRouter()
+	if err := http.ListenAndServe(":8080", router); err != nil {
+		log.Fatal(err)
+	}
 
 }
