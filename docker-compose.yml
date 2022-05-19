@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   postgres:
@@ -19,8 +19,8 @@ services:
     build: "."
     command: "feed-service"
     depends_on:
-      - postgres
-      - nats
+      - "postgres"
+      - "nats"
     ports:
       - "8080"
     environment:
@@ -32,22 +32,22 @@ services:
     build: "."
     command: "query-service"
     depends_on:
-      - postgres
-      - nats
-      - elasticsearch
+      - "postgres"
+      - "nats"
+      - "elasticsearch"
     ports:
       - "8080"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: mydb
-      NATS_ADDRESS: "nats:4222"
-      ELASTICSEARCH_ADDRESS: "elasticsearch:9200"
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: mysecretpassword
+        POSTGRES_DB: mydb
+        NATS_ADDRESS: "nats:4222"
+        ELASTICSEARCH_ADDRESS: "elasticsearch:9200"
   pusher:
     build: "."
-    command: "pusher-service"
+    command: "pusher"
     depends_on:
-      - nats
+      - "nats"
     ports:
       - "8080"
     environment:
@@ -55,7 +55,7 @@ services:
   nginx:
     build: "./nginx"
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - feed
       - query

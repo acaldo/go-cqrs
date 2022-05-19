@@ -10,12 +10,12 @@ type CreatedFeedMessage struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
-func NewCreatedFeedMessage(id string, title string, description string, createdAt time.Time) *CreatedFeedMessage {
+func newCreatedFeedMessage(id, title, description string, createdAt time.Time) *CreatedFeedMessage {
 	return &CreatedFeedMessage{
 		Type:        "created_feed",
 		ID:          id,
 		Title:       title,
 		Description: description,
-		CreatedAt:   time.Now(),
+		CreatedAt:   createdAt,
 	}
 }

@@ -16,9 +16,8 @@ type Config struct {
 func main() {
 	var cfg Config
 	err := envconfig.Process("", &cfg)
-
 	if err != nil {
-		log.Fatalf("%v", err)
+		log.Fatal(err)
 	}
 
 	hub := NewHub()
@@ -27,21 +26,17 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	err = n.OnCreatedFeed(func(m events.CreatedFeedMessage) {
-		hub.Broadcast(NewCreatedFeedMessage(m.ID, m.Title, m.Description, m.CreatedAt), nil)
+		hub.Broadcast(newCreatedFeedMessage(m.ID, m.Title, m.Description, m.CreatedAt), nil)
 	})
-
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	events.SetEventStore(n)
 
 	defer events.Close()
 
 	go hub.Run()
-
 	http.HandleFunc("/ws", hub.HandleWebSocket)
 	err = http.ListenAndServe(":8080", nil)
 	if err != nil {

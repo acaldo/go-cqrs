@@ -18,7 +18,7 @@ COPY search search
 COPY models models
 COPY feed-service feed-service
 COPY query-service query-service
-COPY pusher-service pusher-service
+COPY pusher pusher
 
 RUN go install ./...
 
